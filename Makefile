@@ -7,7 +7,6 @@ sys/dma \
 hid/audio \
 dev/sdram \
 sys/fatfs \
-per/dac \
 per/gpio \
 per/qspi \
 per/sai \
@@ -34,6 +33,7 @@ dev/sr_595 \
 dev/codec_ak4556 \
 dev/codec_pcm3060 \
 dev/codec_wm8731 \
+dev/lcd_hd44780 \
 hid/ctrl \
 hid/encoder \
 hid/gatein \
@@ -47,11 +47,13 @@ hid/usb \
 hid/wavplayer \
 hid/logger \
 per/adc \
+per/dac \
 per/i2c \
 per/spi \
 per/tim \
 per/uart \
-util/color
+util/color \
+util/WaveTableLoader \
 
 ######################################
 # building variables
@@ -279,7 +281,8 @@ C_INCLUDES = \
 -I$(MODULE_DIR) \
 -I. 
 
-WARNINGS = -Wall -Wno-attributes -Wno-strict-aliasing -Wno-maybe-uninitialized -Wno-missing-attributes #-Werror
+WARNINGS += -Wall -Wno-attributes -Wno-strict-aliasing -Wno-maybe-uninitialized -Wno-missing-attributes #-Werror
+CPP_WARNINGS += -Wno-register
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_INCLUDES) $(AS_DEFS) -ggdb $(WARNINGS) $(OPT) -fdata-sections -ffunction-sections
@@ -298,7 +301,7 @@ CFLAGS += \
 -finline-functions
 
 # C++ Flags
-CPPFLAGS = $(CFLAGS)
+CPPFLAGS = $(CFLAGS) $(CPP_WARNINGS)
 CPPFLAGS += \
 -fno-exceptions \
 -fno-rtti 
